@@ -4,10 +4,27 @@
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>VoiceInsight - Speech Analysis</title>
-    <meta name="description" content="Convert speech to text and analyze sentiment with advanced AI tools">
+    <title>VoiceInsight - AI-Powered Speech Analysis</title>
+    <meta name="description" content="Advanced speech-to-text with emotion analysis, sentiment detection, and AI conversation companion">
+    <meta name="theme-color" content="#f59e0b" />
+    
+    <!-- Preload critical resources -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    
     <style>
-      /* Prevent flash of unstyled content */
+      /* Critical CSS for loading state */
+      * {
+        box-sizing: border-box;
+      }
+      
+      body {
+        margin: 0;
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        min-height: 100vh;
+      }
+      
       #root {
         min-height: 100vh;
         display: flex;
@@ -15,14 +32,50 @@
         justify-content: center;
       }
       
-      .loading {
-        font-family: Arial, sans-serif;
-        color: #666;
+      .loading-container {
         text-align: center;
+        color: white;
+        padding: 2rem;
+        background: rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(10px);
+        border-radius: 1rem;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
       }
       
-      .loading::after {
-        content: '...';
+      .loading-title {
+        font-size: 2rem;
+        font-weight: bold;
+        margin-bottom: 1rem;
+        background: linear-gradient(45deg, #f59e0b, #fbbf24);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+      }
+      
+      .loading-text {
+        font-size: 1.1rem;
+        margin-bottom: 2rem;
+        opacity: 0.9;
+      }
+      
+      .loading-spinner {
+        width: 40px;
+        height: 40px;
+        border: 4px solid rgba(255, 255, 255, 0.3);
+        border-top: 4px solid #f59e0b;
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+        margin: 0 auto;
+      }
+      
+      @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+      }
+      
+      .loading-dots::after {
+        content: '';
         animation: dots 1.5s steps(4, end) infinite;
       }
       
@@ -36,36 +89,82 @@
   </head>
   <body>
     <div id="root">
-      <div class="loading">Loading VoiceInsight</div>
+      <div class="loading-container">
+        <div class="loading-title">🎤 VoiceInsight</div>
+        <div class="loading-text">
+          Initializing AI-powered speech analysis<span class="loading-dots"></span>
+        </div>
+        <div class="loading-spinner"></div>
+      </div>
     </div>
     <script type="module" src="/src/main.tsx"></script>
+    
     <script>
-      // Debug script to check if everything is loading
-      console.log('HTML loaded, root element:', document.getElementById('root'));
-      
-      // Check if the script loads
-      window.addEventListener('load', () => {
-        console.log('Window loaded');
-        setTimeout(() => {
-          const root = document.getElementById('root');
-          if (root && root.innerHTML.includes('Loading VoiceInsight')) {
-            console.warn('App may not have loaded properly - still showing loading message');
-          }
-        }, 3000);
+      // Enhanced debugging and error handling
+      console.log('🚀 VoiceInsight starting...');
+      console.log('Environment:', {
+        userAgent: navigator.userAgent,
+        viewport: `${window.innerWidth}x${window.innerHeight}`,
+        timestamp: new Date().toISOString()
       });
       
-      // Catch any global errors
+      // Performance monitoring
+      const startTime = performance.now();
+      
+      window.addEventListener('load', () => {
+        const loadTime = performance.now() - startTime;
+        console.log(`📊 Page loaded in ${loadTime.toFixed(2)}ms`);
+        
+        // Check if React app loaded
+        setTimeout(() => {
+          const root = document.getElementById('root');
+          if (root && root.innerHTML.includes('loading-container')) {
+            console.warn('⚠️ React app may not have loaded - still showing loading screen');
+            
+            // Show fallback message
+            root.innerHTML = `
+              <div style="text-align: center; color: white; padding: 2rem; font-family: Arial;">
+                <h2>🔧 Loading Issue Detected</h2>
+                <p>The app is taking longer than expected to load.</p>
+                <button onclick="window.location.reload()" style="padding: 12px 24px; background: #f59e0b; color: white; border: none; border-radius: 8px; cursor: pointer; font-size: 16px; margin-top: 1rem;">
+                  🔄 Reload VoiceInsight
+                </button>
+                <div style="margin-top: 2rem; font-size: 0.9rem; opacity: 0.8;">
+                  <p>If this persists, please check:</p>
+                  <ul style="text-align: left; display: inline-block;">
+                    <li>Internet connection</li>
+                    <li>Browser console for errors</li>
+                    <li>JavaScript is enabled</li>
+                  </ul>
+                </div>
+              </div>
+            `;
+          }
+        }, 5000);
+      });
+      
+      // Global error handler
       window.addEventListener('error', (e) => {
-        console.error('Global error:', e.error);
-        document.getElementById('root').innerHTML = `
-          <div style="padding: 20px; color: red; font-family: Arial;">
-            <h2>Error Loading App</h2>
-            <p>${e.error?.message || 'Unknown error'}</p>
-            <button onclick="window.location.reload()" style="padding: 10px 20px; background: #007bff; color: white; border: none; border-radius: 5px; cursor: pointer;">
-              Reload
-            </button>
-          </div>
-        `;
+        console.error('🚨 Global error:', e.error);
+        const root = document.getElementById('root');
+        if (root) {
+          root.innerHTML = `
+            <div style="text-align: center; color: white; padding: 2rem; font-family: Arial;">
+              <h2>🚨 VoiceInsight Error</h2>
+              <p style="background: rgba(239, 68, 68, 0.2); padding: 1rem; border-radius: 8px; margin: 1rem 0;">
+                ${e.error?.message || 'Unknown error occurred'}
+              </p>
+              <button onclick="window.location.reload()" style="padding: 12px 24px; background: #f59e0b; color: white; border: none; border-radius: 8px; cursor: pointer; font-size: 16px;">
+                🔄 Reload App
+              </button>
+            </div>
+          `;
+        }
+      });
+      
+      // Unhandled promise rejection handler
+      window.addEventListener('unhandledrejection', (e) => {
+        console.error('🚨 Unhandled promise rejection:', e.reason);
       });
     </script>
   </body>
